@@ -1,44 +1,41 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "./style.css";
-import API from "../../utils/API";
 import Wrapper from "../Wrapper";
 import EmployeeCard from "../Card";
 import SearchForm from "../SearchForm";
+import employees from "../../tabledata.json";
 
 class Body extends Component {
+  // employees.sort((a,b) =>{
 
-  state={
-    peoples: [],
-    search: ""
-  };
+  // })
 
-  componentDidMount (){
-    API.getRandomEmployees().then(res=>this.setState({peoples:res.data.results})).catch(err=>console.log(err));
-  };
-
-  handleInputChange = event=>{
-    event.preventDefault();
-    this.setState({filter:event.target.value.toLowerCase()})
-    // this.setState({search: event.target.value})
+  state = {
+    employees
   }
 
-  render(){
+  handleInputChange = event => {
+    event.preventDefault();
+    this.setState({ filter: event.target.value.toLowerCase() })
+  }
+
+  render() {
     return (
       <Wrapper>
         <SearchForm value={this.state.search} handleInputChange={this.handleInputChange} handleFormSubmit={this.handleFormSubmit} />
-      {this.state.peoples.map(peoples => (
-        <EmployeeCard
-          key={peoples.id.value}
-          name={`${peoples.name.title} ${peoples.name.first} ${peoples.name.last}`}
-          location={peoples.location.state}
-          image={peoples.picture.medium}
-          email={peoples.email}
-          phone={peoples.cell}
-        />
-      ))}
+        {this.state.employees.map(employee => (
+          <EmployeeCard
+            key={employee.id.value}
+            name={`${employee.name.title} ${employee.name.first} ${employee.name.last}`}
+            location={employee.location.state}
+            image={employee.picture.medium}
+            email={employee.email}
+            phone={employee.cell}
+          />
+        ))}
       </Wrapper>
     )
   }
 }
-  
+
 export default Body;
